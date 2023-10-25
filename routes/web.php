@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SignupController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/signin', [LoginController::class, 'signin'])->name('signin');
+Route::get('/signout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/signinAuth', [LoginController::class, 'signinAuth'])->name('signinAuth');
+Route::get('/signup', [SignupController::class, 'signup'])->name('signup');
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });

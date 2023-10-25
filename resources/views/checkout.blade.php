@@ -197,13 +197,10 @@
                                     </tbody>
                                 </table>
                                 <div class="u-s-m-b-13">
-                                    <input type="radio" class="radio-box" name="payment-method" id="cash-on-delivery">
+                                    <input type="radio" class="radio-box" name="payment-method" id="cash-on-delivery" required>
                                     <label class="label-text" for="cash-on-delivery">Cash on Delivery</label>
                                 </div>
-                                <div class="u-s-m-b-13">
-                                    <input type="radio" class="radio-box" name="payment-method" id="credit-card-stripe">
-                                    <label class="label-text" for="credit-card-stripe">Credit Card (Stripe)</label>
-                                </div>
+                               
                                 
                                 
                                 <button type="submit" class="button button-outline-secondary">Place Order</button>
