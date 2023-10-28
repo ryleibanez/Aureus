@@ -30,16 +30,20 @@
     
                     <div class="signin-form" style="">
                         <h2 class="form-title">Forgot Password</h2>
-                        <form method="POST" class="register-form" id="login-form" action="securityquestion.html">
+                        <form method="POST" class="register-form" id="login-form" action="{{route('emailverify')}}">
+                            @csrf
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="email" id="your_name" placeholder="Email" required/>
                             </div>
-                            
+                            @if(session()->has('errors'))
+                            <span style="color: red;">{{ session('errors') }}</span>
+                            @endif
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Submit"/>
                             </div>
-                            <a href="signin.html" class="signup-image-link">Return to signin</a>
+                            <a href="{{route('signin')}}" class="signup-image-link">Return to signin</a>
+                            
                         </form>
                         
                     </div>

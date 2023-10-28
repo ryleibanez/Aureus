@@ -1,8 +1,19 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\forgotPasswordController;
+use App\Http\Controllers\forgotSecurityController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\SignupController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Middleware\buynowMiddleware;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,11 +25,87 @@ use App\Http\Controllers\SignupController;
 |
 */
 
-Route::get('/signin', [LoginController::class, 'signin'])->name('signin');
+Route::get('/homepage', [HomeController::class, 'index'])->name('index')->middleware('buynowChecker');
+Route::get('/', [HomeController::class, 'index'])->name('index')->middleware('buynowChecker');
+Route::get('/signin', [LoginController::class, 'signin'])->name('signin')->middleware(['signinMiddleware','buynowChecker']);
+Route::post('/signin', [LoginController::class, 'signinAuth'])->name('signin.post');
 Route::get('/signout', [LoginController::class, 'logout'])->name('logout');
-Route::post('/signinAuth', [LoginController::class, 'signinAuth'])->name('signinAuth');
-Route::get('/signup', [SignupController::class, 'signup'])->name('signup');
+Route::get('/signup', [RegisterController::class, 'signup'])->name('signup')->middleware(['signinMiddleware','buynowChecker']);
+Route::post('/signupPost', [RegisterController::class, 'createUser'])->name('signup.post');
 
-Route::get('/', function () {
-    return view('index');
+//forgot pass
+
+Route::get('/forgotpassword', [forgotPasswordController::class, 'forgot'])->name('forgotpassword')->middleware(['signinMiddleware','buynowChecker']);
+Route::post('/forgotpassword', [forgotPasswordController::class, 'emailVerify'])->name('emailverify')->middleware(['signinMiddleware','buynowChecker']);
+
+//forgot security
+
+
+Route::get('/securityvalidation', [forgotPasswordController::class, 'getSecurityQuestion'])->name('secvalidation')->middleware(['securityvalidation','buynowChecker']);
+Route::post('/securityvalidation', [forgotPasswordController::class, 'validateAnswer'])->name('answerverify')->middleware(['securityvalidation','buynowChecker']);
+
+//newpass
+Route::get('/newpassword', [forgotPasswordController::class, 'newPassword'])->name('newpassword')->middleware('newpasswordMiddleware');
+Route::post('/newpassword', [forgotPasswordController::class, 'postPassword'])->name('postPassword')->middleware('newpasswordMiddleware');
+
+//cartactions
+Route::get('/getCartCount', [CartController::class, 'getCartCount'])->name('getCartCount');
+
+Route::get('/addtocart', [CartController::class, 'addtocart'])->name('addtocart')->middleware('auth');
+
+Route::get('/updateCart', [CartController::class, 'updateCart'])->name('updateCart')->middleware('auth');
+
+Route::get('/removeCart', [CartController::class, 'removeCart'])->middleware('auth');
+
+Route::get('/removeAll', [CartController::class, 'removeAll'])->name('removeAll')->middleware(['auth']);
+
+//Cart Page
+Route::get('/mycart', [CartController::class, 'cart'])->name('mycart')->middleware(['auth','buynowChecker']);
+Route::get('/mycartupdate', [CartController::class, 'checkForUpdate'])->name('mycartupdate1');
+Route::post('/cartcheckout', [OrderController::class, 'cartCheckout'])->name('checkoutcart.post')->middleware(['auth', 'cartCheckoutMiddleware']);
+
+
+//Account Page
+Route::get('/myaccount', [AccountController::class, 'account'])->name('myaccount')->middleware(['auth','buynowChecker']);
+
+//My Profile
+Route::get('/myprofile', [ProfileController::class, 'myprofile'])->name('myprofile')->middleware(['auth','buynowChecker']);
+//Edit Profile
+Route::get('/editprofile', [ProfileController::class, 'editProfilePage'])->name('editProfile')->middleware(['auth','buynowChecker']);
+Route::post('/editprofile', [ProfileController::class, 'updateProfile'])->name('editprofile.post')->middleware(['auth','buynowChecker']);
+//address
+Route::get('/myaddress', [AddressController::class, 'addresspage'])->name('myaddress')->middleware(['auth','buynowChecker']);
+
+//edit address
+Route::get('/editaddress', [AddressController::class, 'editAddressPage'])->name('editaddress')->middleware(['auth','buynowChecker']);
+Route::post('/editaddress', [AddressController::class, 'updateAddress'])->name('updateAddress')->middleware(['auth','buynowChecker']);
+
+//order
+Route::get('/myorders', [OrderController::class, 'myOrder'])->name('myorders')->middleware(['auth','buynowChecker']);
+Route::get('/getOrders', [OrderController::class, 'getAllOrders']);
+Route::get('/cancelOrder', [OrderController::class, 'CancelOrder'])->middleware('auth');
+Route::get('/updateDisplayOrder', [OrderController::class, 'updateOrder'])->middleware('auth');
+
+//product page
+Route::get('/viewproduct', [ProductController::class, 'productPage'])->name('viewproduct');
+
+//buy now page
+
+Route::get('/buynow', [OrderController::class, 'buyNow'])->middleware(['auth','buynowChecker']);
+Route::get('/createbuy', [OrderController::class, 'createBuy'])->middleware(['auth','buynowChecker']);
+Route::get('/updateQuantity', [OrderController::class, 'updateQuantity']);
+Route::get('/loadBuyNow', function () {
+    return view('includes.buynowitems');
 });
+
+//checkout order
+Route::get('/checkoutorder', [OrderController::class, 'checkoutOrder'])->name('checkoutOrder')->middleware(['auth','buynowChecker']);
+Route::post('/checkoutorder', [OrderController::class, 'checkoutUpdateOrder'])->name('checkoutorder.post')->middleware(['auth','buynowChecker']);
+Route::get('/cartcheckout', [OrderController::class, 'cartCheckout'])->name('cartcheckout')->middleware(['auth', 'cartCheckoutMiddleware']);
+Route::post('/cartcheckout', [OrderController::class, 'createCartBuy'])->name('checkoutcart.post')->middleware(['auth', 'cartCheckoutMiddleware']);
+
+Route::get('/products', [ProductController::class, 'productsPage'])->name('products');
+Route::get('/searchProduct', [ProductController::class, 'searchProduct'])->name('search');
+Route::get('/categoryProduct', [ProductController::class, 'searchProduct'])->name('categoryProduct');
+
+Route::get('/category', [ProductController::class, 'category'])->name('category');

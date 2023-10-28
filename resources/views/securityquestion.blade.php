@@ -29,17 +29,20 @@
     
                     <div class="signin-form" style="">
                         <h2 class="form-title">Security Question</h2>
-                        <h3 class="form-title">Who is your favorite Professor?</h3>
-                        <form method="POST" class="register-form" id="login-form" action="newpassword.html">
+                        <h3 class="form-title">{{$securityQuestion}}?</h3>
+                        <form method="POST" class="register-form" id="login-form" action="{{route('answerverify')}}">
+                            @csrf
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="answer" id="your_name" placeholder="Answer" required/>
                             </div>
-                            
+                            @if(session()->has('error'))
+                                <span style="color:red; text-align: center;">{{session('error')}}</span>
+                            @endif
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Submit"/>
                             </div>
-                            <a href="signin.html" class="signup-image-link">Return to signin</a>
+                            <a href="{{route('signin')}}" class="signup-image-link">Return to signin</a>
                         </form>
                        
                     </div>

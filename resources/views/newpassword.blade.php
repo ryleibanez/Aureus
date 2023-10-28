@@ -31,16 +31,23 @@
                     <div class="signin-form" style="">
                         <h2 class="form-title">Create a New Password</h2>
                         
-                        <form method="POST" class="register-form" id="login-form" action="signin.html">
+                        <form method="POST" class="register-form" id="login-form" action="{{route('postPassword')}}">
+                            @csrf
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="password" name="answer" id="your_name" placeholder="New Password" required/>
+                                <input type="password" name="password" id="your_name" placeholder="New Password" required/>
                             </div>
-                            
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="password" name="repassword" id="your_name" placeholder="Re-enter Password" required/>
+                            </div>
+                            @if(session()->has('error'))
+                            <span style="color: red; text-align: center">{{session('error')}}</span>
+                            @endif
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Submit"/>
                             </div>
-                            <a href="signin.html" class="signup-image-link">Return to signin</a>
+                            <a href="{{route('signin')}}" class="signup-image-link">Return to signin</a>
                         </form>
                        
                     </div>
