@@ -21,10 +21,15 @@ class User extends Authenticatable
         'firstName',
         'lastName',
         'type',
+<<<<<<< Updated upstream
         'email',
         'password',
         'mobilenumber',
         'address'
+=======
+        'secAnswer',
+        'profilepic',
+>>>>>>> Stashed changes
     ];
 
 

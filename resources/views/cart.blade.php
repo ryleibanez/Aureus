@@ -205,6 +205,7 @@
                 <th>Quantity</th>
                 <th>Subtotal</th>
             </tr>
+<<<<<<< Updated upstream
             <tr>
                 <td>
                     <div class="cart-info">
@@ -222,6 +223,45 @@
             </tr>
             
             
+=======
+            @php
+                $cartcheck = \App\Models\Cart::where('email', auth()->user()->email)->first();
+            @endphp
+
+           
+
+
+            @foreach ($cart as $items)
+                @if (!empty($items))
+                    @php
+                        $pdStock = \App\Models\Products::where('id', $items->product_id)->first();
+                        $cartcheck = \App\Models\Cart::where('email', auth()->user()->email)->first();
+
+                    @endphp
+                    <tr>
+                        <td>
+                            <div class="cart-info">
+                                <img src="{{$items->pdImage}}">
+                                <div>
+                                    <p>{{ $items->pdname }}</p>
+                                    <small>Price: PHP {{ number_format($items->price, 2, '.', ',') }}</small>
+                                    <br>
+                                    <a onclick="removeCart('{{ $items->id }}')" style="cursor: pointer">Remove</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="text" value="{{ $items->quantity }}" id="quantity_{{ $items->id }}"
+                                name="quantity"
+                                onchange="changeValues('{{ $items->price }}','{{ $pdStock->stocks }}', '{{ $items->id }}')">
+                        </td>
+                        <td> PHP {{ number_format($items->price * $items->quantity, 2, '.', ',') }}</td>
+                    </tr>
+                @else
+                @endif
+            @endforeach
+
+
+>>>>>>> Stashed changes
         </table>
         <div class="total-price">
             <table>

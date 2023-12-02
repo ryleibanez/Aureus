@@ -166,9 +166,30 @@
     <div class="preloader is-active">
         <div class="preloader__wrap">
 
+<<<<<<< Updated upstream
             <img class="preloader__img" src="images/preloader.png" alt=""></div>
     </div>
+=======
+    <style>
+        .upload-profile-div {
+>>>>>>> Stashed changes
 
+            height: 200px;
+            max-height: 200px;
+            text-align: center;
+
+
+        }
+
+        .img-class {
+
+            margin: auto;
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            display: block;
+        }
+    </style>
     <!--====== Main App ======-->
     <div id="app">
 
@@ -278,7 +299,11 @@
 
                                             <span class="dash__text u-s-m-b-30">Looks like you haven't update your profile</span>
                                             <div class="dash__link dash__link--secondary u-s-m-b-30">
+                                                <form class="dash-edit-p" id="myForm" method="post" enctype="multipart/form-data">
+                                                    @csrf
+                                                <div class="upload-profile-div" title="Click to Upload New Profile Picture">
 
+<<<<<<< Updated upstream
                                                 
                                             <div class="row">
                                                 <div class="col-lg-12">
@@ -287,6 +312,20 @@
                                                             <div class="u-s-m-b-30">
 
                                                                 <label class="gl-label" for="reg-fname">FIRST NAME *</label>
+=======
+                                                    <span style="color:black; font-size: 1rem;">Profile Picture *</span>
+                                                    <label for="image-input"><img class="img-class" id="selected-image"
+                                                            src="{{ auth()->user()->profilepic }}" /></label>
+                                                    <input type="file" id="image-input" name="profilepic" accept="image/jpeg, image/png"
+                                                        style="display:none;" onchange="handleImageChange()">
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                       
+                                                            <div class="gl-inline">
+                                                                <div class="u-s-m-b-30">
+>>>>>>> Stashed changes
 
                                                                 <input class="input-text input-text--primary-style" type="text" id="reg-fname" placeholder="Ryle"></div>
                                                             <div class="u-s-m-b-30">
@@ -369,6 +408,50 @@
     </div>
     <!--====== End - Main App ======-->
 
+<<<<<<< Updated upstream
+=======
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/editprofile', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var dataUser = data.status;
+                    var error = data.errors;
+                    if (dataUser === "success") {
+
+
+                        window.location.replace('/myprofile');
+                        document.getElementById('invalid').style.display = "none";
+
+                    } else {
+                        Toastify({
+                            text: "Invalid Input. Please Try Again!",
+                            duration: 3000,
+
+
+                            close: true,
+                            gravity: "bottom", // `top` or `bottom`
+                            position: "right", // `left`, `center` or `right`
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                                background: "red",
+                            }
+                        }).showToast();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+>>>>>>> Stashed changes
 
     <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
     <script>
@@ -406,11 +489,69 @@
             accountDropdownMenu.classList.remove('show');
         }
 
+<<<<<<< Updated upstream
         // Click event listener
         accountDropdown.addEventListener('click', function(e) {
             e.preventDefault();
             if (accountDropdownMenu.classList.contains('show')) {
                 closeDropdown();
+=======
+            // Click event listener
+            accountDropdown.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (accountDropdownMenu.classList.contains('show')) {
+                    closeDropdown();
+                } else {
+                    openDropdown();
+                }
+            });
+
+            // Hover event listeners
+            accountDropdown.addEventListener('mouseenter', openDropdown);
+            accountDropdownMenu.addEventListener('mouseleave', closeDropdown);
+
+            // Close the dropdown if clicked outside
+            document.addEventListener('click', function(e) {
+                if (!accountDropdownMenu.contains(e.target) && !accountDropdown.contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function handleImageChange() {
+            const input = document.getElementById('image-input');
+            const image = document.getElementById('selected-image');
+
+            if (input.files && input.files[0]) {
+                const selectedFile = input.files[0];
+
+                // Check if the file type is JPEG or PNG
+                if (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png') {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        image.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(selectedFile);
+                } else {
+                    // Display an error message or take appropriate action for invalid file type
+                    alert('Please select a valid JPEG or PNG image.');
+                    // Reset the file input to clear the invalid selection
+                    input.value = '';
+                }
+            }
+        }
+
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight = "300px"
+>>>>>>> Stashed changes
             } else {
                 openDropdown();
             }
