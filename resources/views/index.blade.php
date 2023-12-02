@@ -316,6 +316,7 @@
 
     <!-- javascript -->
     <script>
+<<<<<<< Updated upstream
         document.addEventListener('DOMContentLoaded', function() {
             const accountDropdown = document.getElementById('accountDropdown');
             const accountDropdownMenu = accountDropdown.nextElementSibling;
@@ -337,6 +338,24 @@
                     closeDropdown();
                 } else {
                     openDropdown();
+=======
+        var session = "{{ session('errorcheckout') }}";
+        var search = "{{ session('search') }}";
+        var admin = "{{ session ('admincheck')}}";
+
+        if (session) {
+            Toastify({
+                text: "{{ session('errorcheckout') }}",
+                duration: 3000,
+
+
+                close: true,
+                gravity: "bottom", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "Red",
+>>>>>>> Stashed changes
                 }
             });
     
@@ -363,6 +382,22 @@
             else {
                 MenuItems.style.maxHeight = "0px"
             }
+        }
+
+        if (admin) {
+            Toastify({
+                text: admin,
+                duration: 3000,
+
+
+                close: true,
+                gravity: "bottom", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "Red",
+                }
+            }).showToast();
         }
     </script>
 <script>

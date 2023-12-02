@@ -276,8 +276,14 @@
                                     <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                         <div class="dash__pad-2">
                                             <div class="dash__address-header">
+<<<<<<< Updated upstream
                                                 <h1 class="dash__h1">Address Book</h1>
                                                 
+=======
+                                                <h1 class="dash__h1">My Address</h1>
+                                                <a class="address-book-edit btn--e-transparent-platinum-b-2"
+                                                href="{{ route('addAddress') }}">+ New Address</a>
+>>>>>>> Stashed changes
                                             </div>
                                         </div>
                                     </div>
@@ -295,6 +301,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+<<<<<<< Updated upstream
                                                     
                                                     <tr>
                                                         <td>
@@ -305,7 +312,42 @@
                                                         <td>Rizal</td>
                                                         <td>(+63) 9998887777</td>
                                                        
+=======
+                                                    @foreach($main as $item)
+                                                    <tr>
+                                                        <td>
+
+                                                            <a class="address-book-edit btn--e-transparent-platinum-b-2"
+                                                                href="{{ route('editaddress') }}">Edit</a>
+                                                        </td>
+                                                        <td>{{ $item->fname }} {{ $item->lname }} </td>
+                                                        <td>{{ $item->address }}</td>
+                                                        <td>{{ $item->country }}</td>
+                                                        <td>{{ $item->mobilenumber }}</td>
+
+>>>>>>> Stashed changes
                                                     </tr>
+                                                    @endforeach
+                                                    @foreach($address as $item)
+                                                    <tr>
+                                                        <td>
+
+                                                            <a class="address-book-edit btn--e-transparent-platinum-b-2"
+                                                                onclick="defaultAddress('{{$item->id}}')">Default Address</a>
+                                                                <br>
+                                                                <a class="address-book-edit btn--e-transparent-platinum-b-2"
+                                                                href="{{ route('editaddress') }}">Edit</a>
+                                                                <br>
+                                                                <a class="address-book-edit btn--e-transparent-platinum-b-2"
+                                                               onclick="deleteAddress('{{$item->id}}')">Delete</a>
+                                                        </td>
+                                                        <td>{{ auth()->user()->fname }} {{ auth()->user()->lname }} </td>
+                                                        <td>{{ $item->address }}</td>
+                                                        <td>{{ $item->country }}</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -363,11 +405,95 @@
 
     <!--====== App ======-->
     <script src="css2/js/app.js"></script>
+<<<<<<< Updated upstream
  <!-- javascript -->
  <script>
     document.addEventListener('DOMContentLoaded', function() {
         const accountDropdown = document.getElementById('accountDropdown');
         const accountDropdownMenu = accountDropdown.nextElementSibling;
+=======
+    <!-- javascript -->
+    <script>
+        var session = "{{ session('status') }}";
+        var addSession = "{{session('statusAdd')}}";
+
+        function deleteAddress(id) {
+            fetch('/manageAddress?id=' + id + '&mode=Delete')
+                .then(response => response.json())
+                .then(data => {
+                    var action = data.status;
+                  
+
+                    if (action == 'success') {
+                        Toastify({
+                            text: "Deleted Successfully!",
+                            duration: 3000,
+                            gravity: "bottom", // `top` or `bottom`
+                            position: "right", // `left`, `center` or `right`
+
+                            style: {
+                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                            }
+                        }).showToast();
+
+                        window.location.reload();
+                    }
+
+                    
+
+                })
+                .catch(error => {
+                    console.error('Error fetching cart count:', error);
+                });
+        }
+
+        function defaultAddress(id) {
+            fetch('/manageAddress?id=' + id + '&mode=Default')
+                .then(response => response.json())
+                .then(data => {
+                    var action = data.status;
+                  
+
+                    if (action == 'success') {
+                        Toastify({
+                            text: "Action Has Been Made Successfully!",
+                            duration: 3000,
+                            gravity: "bottom", // `top` or `bottom`
+                            position: "right", // `left`, `center` or `right`
+
+                            style: {
+                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                            }
+                        }).showToast();
+
+                        window.location.reload();
+                    }
+
+                    
+
+                })
+                .catch(error => {
+                    console.error('Error fetching cart count:', error);
+                });
+        }
+
+
+        if(addSession){
+            Toastify({
+                text: "Address Has Been Added Successfully!",
+                duration: 3000,
+                
+                
+                close: true,
+                gravity: "bottom", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                }
+            }).showToast();  
+        }
+>>>>>>> Stashed changes
 
         // Function to open the dropdown
         function openDropdown() {
