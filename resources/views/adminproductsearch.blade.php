@@ -5,12 +5,10 @@
 
 
     <!-- Search Bar -->
+
     <div class="search-container">
-
-        <input type="text" placeholder="Product Name" id="search">
-        <button class="btn" onclick="search()">Search</button>
-        <button class="btn add-product-btn" onclick="window.location.href='{{ route('addProduct') }}'">Add Product</button>
-
+        <input type="text" placeholder="Search Transaction Id" id="search">
+        <button class="btn" onclick="searchNow();">Search</button>
     </div>
 
 
@@ -56,30 +54,15 @@
     </div>
     @php
         $page = request()->query('page');
+        $search = request()->query('search');
     @endphp
     <script>
         function search() {
             var search = document.getElementById('search').value;
             var link = "/searchProducts?search=" + search;
-            window.location.href = link;
+            window.location.href= link;
         }
 
-        var session = "{{ session('addProduct') }}";
-        if (session) {
-            Toastify({
-                text: "Product Has Been Successfully Added!",
-                duration: 3000,
-
-
-                close: true,
-                gravity: "bottom", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                    background: "Green",
-                }
-            }).showToast();
-        }
 
         function deleteProduct(id) {
             fetch('/deleteProduct?id=' + id)
@@ -103,7 +86,7 @@
                             }
                         }).showToast();
                     } else {
-
+                       
                     }
 
 
@@ -115,7 +98,8 @@
 
         function checkForUpdate() {
             var page = "{{ $page }}";
-            var link = "/viewProduct?page=" + page + "&mode=manageproducts";
+            var search = "{{ $search }}";
+            var link = "/searchAdminProduct?page=" + page + "&search=" + search + "&mode=search";
             fetch(link)
                 .then(response => response.text())
                 .then(data => {

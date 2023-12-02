@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+       
+        //Address
+        Validator::extend('unique_address', function ($attribute, $value, $parameters, $validator) {
+            list($table, $column, $ignoreId) = $parameters;
+            return DB::table('products')
+                ->where($column, $value)
+                ->where('id', '!=', $ignoreId)
+                ->count() === 0;
+        });
     }
 }

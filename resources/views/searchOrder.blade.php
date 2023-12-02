@@ -49,7 +49,6 @@
     </div>
 
 
-
     <div class="popup-container" id="popupContainer" style="display: none;">
         <div class="popup-form">
             <span class="popup-close" id="closePopup" onclick="closePopup()" style="cursor: pointer;">X</span>
@@ -125,6 +124,7 @@
             var search =document.getElementById('search').value;
             window.location.href="/searchOrder?search=" + search;
         }
+        
         function delivered(id) {
 
             fetch('/delivered?id=' + id)
@@ -314,9 +314,9 @@
 
         }
         var page = "{{ request()->query('page') }}"
-
+        var search = "{{request()->query('search')}}"
         function updateInfo() {
-            fetch('/vieworder?page=' + page)
+            fetch('/viewsearchOrder?page=' + page + "&search=" + search)
                 .then(response => response.text())
                 .then(data => {
 
